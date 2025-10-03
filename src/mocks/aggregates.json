@@ -1,0 +1,66 @@
+{
+  "buckets": [
+    { "ts": "2025-10-03T00:00:00Z", "humanReq": 12450, "botReq": 8934, "humanBytes": 8920340000, "botBytes": 6234000000 },
+    { "ts": "2025-10-03T01:00:00Z", "humanReq": 11890, "botReq": 9234, "humanBytes": 8534000000, "botBytes": 6890000000 },
+    { "ts": "2025-10-03T02:00:00Z", "humanReq": 10234, "botReq": 8456, "humanBytes": 7234000000, "botBytes": 6123000000 },
+    { "ts": "2025-10-03T03:00:00Z", "humanReq": 9456, "botReq": 7890, "humanBytes": 6890000000, "botBytes": 5678000000 },
+    { "ts": "2025-10-03T04:00:00Z", "humanReq": 9890, "botReq": 8234, "humanBytes": 7123000000, "botBytes": 5890000000 },
+    { "ts": "2025-10-03T05:00:00Z", "humanReq": 11234, "botReq": 9567, "humanBytes": 8234000000, "botBytes": 6456000000 },
+    { "ts": "2025-10-03T06:00:00Z", "humanReq": 13567, "botReq": 11234, "humanBytes": 9567000000, "botBytes": 7890000000 },
+    { "ts": "2025-10-03T07:00:00Z", "humanReq": 15890, "botReq": 12890, "humanBytes": 11234000000, "botBytes": 8934000000 },
+    { "ts": "2025-10-03T08:00:00Z", "humanReq": 18234, "botReq": 15234, "humanBytes": 12890000000, "botBytes": 10234000000 },
+    { "ts": "2025-10-03T09:00:00Z", "humanReq": 20456, "botReq": 17890, "humanBytes": 14567000000, "botBytes": 11890000000 },
+    { "ts": "2025-10-03T10:00:00Z", "humanReq": 22890, "botReq": 24567, "humanBytes": 16234000000, "botBytes": 15234000000 },
+    { "ts": "2025-10-03T11:00:00Z", "humanReq": 24123, "botReq": 28934, "humanBytes": 17890000000, "botBytes": 18567000000 },
+    { "ts": "2025-10-03T12:00:00Z", "humanReq": 21567, "botReq": 26234, "humanBytes": 15567000000, "botBytes": 16890000000 }
+  ],
+  "top": {
+    "ips": [
+      { "key": "203.0.113.42", "req": 47234, "bytes": 12340000000, "isBot": true },
+      { "key": "198.51.100.17", "req": 38123, "bytes": 9890000000, "isBot": true },
+      { "key": "192.0.2.89", "req": 29456, "bytes": 7234000000, "isBot": true },
+      { "key": "198.18.0.54", "req": 24890, "bytes": 6123000000, "isBot": false },
+      { "key": "203.0.113.78", "req": 21234, "bytes": 5456000000, "isBot": true },
+      { "key": "192.0.2.145", "req": 18567, "bytes": 4890000000, "isBot": false },
+      { "key": "198.51.100.89", "req": 16234, "bytes": 4123000000, "isBot": true },
+      { "key": "203.0.113.156", "req": 14567, "bytes": 3678000000, "isBot": false }
+    ],
+    "paths": [
+      { "key": "/api/data", "req": 89234, "bytes": 23450000000, "errorRate": 0.023 },
+      { "key": "/api/users", "req": 67890, "bytes": 18234000000, "errorRate": 0.018 },
+      { "key": "/api/posts", "req": 54123, "bytes": 14567000000, "errorRate": 0.009 },
+      { "key": "/images/hero.jpg", "req": 45678, "bytes": 89234000000, "errorRate": 0.001 },
+      { "key": "/api/analytics", "req": 38901, "bytes": 10234000000, "errorRate": 0.034 },
+      { "key": "/static/bundle.js", "req": 34567, "bytes": 67890000000, "errorRate": 0.002 },
+      { "key": "/api/comments", "req": 29345, "bytes": 7890000000, "errorRate": 0.015 },
+      { "key": "/", "req": 27890, "bytes": 6234000000, "errorRate": 0.005 }
+    ],
+    "bots": [
+      { "key": "GPTBot", "costUSD": 324.12, "req": 124567, "bytes": 34567000000 },
+      { "key": "ClaudeBot", "costUSD": 267.34, "req": 98234, "bytes": 27890000000 },
+      { "key": "UnknownBot/1.0", "costUSD": 156.78, "req": 76123, "bytes": 21234000000 },
+      { "key": "SemrushBot", "costUSD": 89.45, "req": 45678, "bytes": 12340000000 },
+      { "key": "AhrefsBot", "costUSD": 67.23, "req": 34890, "bytes": 9567000000 },
+      { "key": "BingBot", "costUSD": 45.67, "req": 29456, "bytes": 7890000000 },
+      { "key": "GoogleBot", "costUSD": 38.90, "req": 25678, "bytes": 6789000000 },
+      { "key": "PetalBot", "costUSD": 28.12, "req": 18234, "bytes": 4567000000 }
+    ]
+  },
+  "ua": {
+    "new": [
+      { "ua": "UnknownBot/1.0", "firstSeen": "2025-10-03T08:00:00Z", "req": 12450, "bytes": 3456000000 },
+      { "ua": "SuspiciousCrawler/2.1", "firstSeen": "2025-10-03T09:15:00Z", "req": 8934, "bytes": 2340000000 },
+      { "ua": "NewScraperBot/3.0", "firstSeen": "2025-10-03T10:30:00Z", "req": 6789, "bytes": 1890000000 },
+      { "ua": "MysteryBot/1.5", "firstSeen": "2025-10-03T11:00:00Z", "req": 4567, "bytes": 1234000000 },
+      { "ua": "DataMiner/2.0", "firstSeen": "2025-10-03T11:45:00Z", "req": 3456, "bytes": 890000000 }
+    ],
+    "unknown": [
+      { "ua": "UnknownBot/1.0", "req": 12450, "bytes": 3456000000, "confidence": 0.67, "status": "Pending" },
+      { "ua": "SuspiciousCrawler/2.1", "req": 8934, "bytes": 2340000000, "confidence": 0.45, "status": "Pending" },
+      { "ua": "Mozilla/5.0 (compatible; unknown)", "req": 6789, "bytes": 1890000000, "confidence": 0.52, "status": "Pending" },
+      { "ua": "CustomBot/1.0", "req": 5678, "bytes": 1567000000, "confidence": 0.61, "status": "Resolved" },
+      { "ua": "WeirdCrawler/0.9", "req": 4567, "bytes": 1234000000, "confidence": 0.38, "status": "Pending" },
+      { "ua": "TestBot/1.1", "req": 3456, "bytes": 890000000, "confidence": 0.71, "status": "Resolved" }
+    ]
+  }
+}

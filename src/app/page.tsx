@@ -1,103 +1,165 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
+import Link from "next/link"
+import { Activity, Shield, Zap } from "lucide-react"
+
+export default function HoxiLanding() {
+  const [url, setUrl] = useState("")
+  const [totalRequests, setTotalRequests] = useState(3992)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTotalRequests((prev) => prev + Math.floor(Math.random() * 5))
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const handleAnalyze = async () => {
+    if (url) {
+      setIsAnalyzing(true)
+      setTimeout(() => {
+        setIsAnalyzing(false)
+        router.push(`/analyze?site=${encodeURIComponent(url)}`)
+      }, 1000)
+    }
+  }
+
+  const features = [
+    {
+      icon: Activity,
+      title: "Real-Time Analytics",
+      description: "Monitor traffic patterns and bot behavior as it happens with millisecond precision.",
+    },
+    {
+      icon: Shield,
+      title: "Advanced Bot Detection",
+      description:
+        "Identify AI crawlers, scrapers, and social bots with 99.7% accuracy using Hoxi traffic intelligence",
+    },
+    {
+      icon: Zap,
+      title: "Instant Implementation",
+      description: "Deploy protection in under 60 seconds with our one-click integration system.",
+    },
+  ]
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-black dark">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-xl border-b border-gray-800">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="relative w-10 h-10">
+                <Image
+                  src="/hoxi-logo.png"
+                  alt="Hoxi Logo"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div>
+                <span className="font-bold text-2xl text-white">Hoxi</span>
+                <Badge variant="secondary" className="ml-2 text-xs bg-green-400/20 text-green-400 border-green-400/30">
+                  LIVE
+                </Badge>
+              </div>
+            </Link>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <div className="flex items-center gap-3">
+              <Link href="/login">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="sm" className="bg-green-400 hover:bg-green-500 text-black font-semibold">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative pt-20 pb-32 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-green-400/5 via-transparent to-emerald-500/5" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-400/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+
+        <div className="container mx-auto px-6 relative">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            {/* Status Badge */}
+            <Badge variant="secondary" className="px-4 py-2 text-sm bg-gray-800/50 text-gray-300 border-gray-700">
+              <Activity className="w-4 h-4 mr-2" />
+              Trusted by 2,500+ developers worldwide
+            </Badge>
+
+            {/* Main Headline */}
+            <div className="space-y-6">
+              <h1 className="text-5xl md:text-7xl font-black leading-tight tracking-tight text-balance text-white">
+                AI, Scrapers, Social Bots… <span className="text-green-400">Let's Get Real About Your Traffic!</span>
+              </h1>
+
+              <p className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto text-pretty">
+                Traffic transparency unlocked. Humans, bots, AI—even the sneaky ones. Track it all,{" "}
+                <span className="text-green-400 font-semibold">make smart moves in seconds</span>.
+              </p>
+            </div>
+
+            {/* CTA Section */}
+            <div className="space-y-6 max-w-2xl mx-auto">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Input
+                  type="url"
+                  placeholder="https://your-website.com"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="flex-1 h-14 text-lg bg-gray-900 border-gray-700 text-white placeholder:text-gray-500"
+                />
+                <Button
+                  onClick={handleAnalyze}
+                  size="lg"
+                  disabled={isAnalyzing}
+                  className="h-14 px-8 bg-green-400 hover:bg-green-500 text-black text-lg font-semibold"
+                >
+                  {isAnalyzing ? "Analyzing..." : "Analyze Now"}
+                </Button>
+              </div>
+
+              <div className="flex items-center justify-center gap-6 text-sm text-gray-400">
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400">✓</span>
+                  <span>Free analysis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400">✓</span>
+                  <span>No signup required</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400">✓</span>
+                  <span>Instant results</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      
     </div>
-  );
+  )
 }

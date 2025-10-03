@@ -1,0 +1,160 @@
+{
+  "reportId": "rep_2025010312450001",
+  "siteId": "site_prod_001",
+  "window": {
+    "start": "2025-10-03T00:00:00Z",
+    "end": "2025-10-03T12:00:00Z"
+  },
+  "provider": "cloudflare",
+  "versions": {
+    "pricing": "v2.1.0",
+    "signatures": "v1.8.3",
+    "sherlock": "v3.2.1",
+    "tools": {
+      "anomalyDetection": "v1.4.0",
+      "analytics": "v2.0.1",
+      "pricing": "v1.3.2"
+    }
+  },
+  "metrics": {
+    "bytes": {
+      "total": 255830720512,
+      "bot": 120785920000,
+      "human": 135044800512
+    },
+    "cost": {
+      "totalUSD": 847.32,
+      "botUSD": 612.45,
+      "humanUSD": 234.87,
+      "breakdown": [
+        { "category": "GPTBot", "usd": 324.12 },
+        { "category": "ClaudeBot", "usd": 267.34 },
+        { "category": "Unknown Scrapers", "usd": 156.78 },
+        { "category": "SemrushBot", "usd": 89.45 },
+        { "category": "Other Bots", "usd": 9.76 }
+      ]
+    }
+  },
+  "classifications": {
+    "sampleSize": 2847,
+    "bots": 1342,
+    "humans": 1456,
+    "unknown": 49,
+    "examples": [
+      {
+        "ua": "GPTBot/1.0 (+https://openai.com/gptbot)",
+        "isBot": true,
+        "botType": "AI Crawler",
+        "confidence": 0.99
+      },
+      {
+        "ua": "Claude-Web/1.0",
+        "isBot": true,
+        "botType": "AI Crawler",
+        "confidence": 0.98
+      },
+      {
+        "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "isBot": false,
+        "confidence": 0.95
+      },
+      {
+        "ua": "UnknownBot/1.0",
+        "isBot": true,
+        "botType": "Unknown",
+        "confidence": 0.67
+      },
+      {
+        "ua": "SuspiciousCrawler/2.1",
+        "isBot": true,
+        "botType": "Scraper",
+        "confidence": 0.89
+      }
+    ]
+  },
+  "anomalies": [
+    {
+      "type": "Rate Spike",
+      "score": 8.47,
+      "ip": "203.0.113.42",
+      "evidence": {
+        "burstZ": 8.47,
+        "rpm": 1247,
+        "normalRpm": 12,
+        "duration": "2h 14m"
+      },
+      "note": "IP burst from 12 req/min to 1,247 req/min (Z-score 8.47)",
+      "severity": "Critical",
+      "firstSeen": "2025-10-03T10:15:00Z",
+      "lastSeen": "2025-10-03T12:29:00Z",
+      "status": "Open"
+    },
+    {
+      "type": "New Bot",
+      "score": 7.23,
+      "evidence": {
+        "ua": "UnknownBot/1.0",
+        "requests": 12450,
+        "bytes": 892340000,
+        "firstSeen": "2025-10-03T08:00:00Z"
+      },
+      "note": "New user agent with high request volume",
+      "severity": "Warning",
+      "firstSeen": "2025-10-03T08:00:00Z",
+      "lastSeen": "2025-10-03T12:00:00Z",
+      "status": "Acknowledged"
+    },
+    {
+      "type": "Cost Anomaly",
+      "score": 6.89,
+      "path": "/api/data",
+      "evidence": {
+        "costUSD": 234.56,
+        "normalCostUSD": 45.23,
+        "increase": "418%"
+      },
+      "note": "Path cost increased by 418% vs baseline",
+      "severity": "Critical",
+      "firstSeen": "2025-10-03T06:00:00Z",
+      "lastSeen": "2025-10-03T12:00:00Z",
+      "status": "Open"
+    },
+    {
+      "type": "Geographic Anomaly",
+      "score": 5.12,
+      "ip": "198.51.100.17",
+      "evidence": {
+        "country": "Unknown",
+        "requests": 8934,
+        "suspiciousHeaders": true
+      },
+      "note": "High volume from unknown geographic origin",
+      "severity": "Warning",
+      "firstSeen": "2025-10-03T09:30:00Z",
+      "lastSeen": "2025-10-03T12:00:00Z",
+      "status": "Open"
+    },
+    {
+      "type": "4xx Spike",
+      "score": 4.56,
+      "path": "/admin",
+      "evidence": {
+        "errorRate": 0.89,
+        "requests": 2340,
+        "status": [403, 404]
+      },
+      "note": "Unusually high 4xx rate, potential scanning activity",
+      "severity": "Info",
+      "firstSeen": "2025-10-03T11:00:00Z",
+      "lastSeen": "2025-10-03T12:00:00Z",
+      "status": "Open"
+    }
+  ],
+  "notes": [
+    "GPTBot traffic increased 47% vs previous 12h window",
+    "Three critical anomalies require immediate review",
+    "Unknown bot activity detected - recommend Sherlock analysis",
+    "Cost spike driven by /api/data endpoint (418% increase)"
+  ],
+  "createdAt": "2025-10-03T12:30:00Z"
+}

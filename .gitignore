@@ -39,3 +39,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Specs
+Specs/*
+
+# Test scripts and data
+test/
+test-*.js
+test-*.ts
+*-test.js
+*-test.ts
+debug-*.ts
+debug-*.js
+quick-*.js
+quick-*.ts
+fetch-bot-signature.ts
+
+# Image
+Image/*

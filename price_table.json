@@ -1,0 +1,74 @@
+{
+    "version": "2025-09-27",
+    "currency": "USD",
+    "providers": {
+      "vercel": {
+        "bandwidth": {
+          "name": "Fast Data Transfer",
+          "included_notes": "Plan includes quota; overage billed per GB.",
+          "overage_per_gb": 0.15,
+          "notes": "Regional pricing may apply."
+        },
+        "blob_transfer": {
+          "overage_per_gb": 0.05
+        },
+        "sources": ["vercel_pricing_fast_data_transfer"]
+      },
+      "aws_cloudfront": {
+        "bandwidth": {
+          "first_1tb_free_per_month": true,
+          "regions": {
+            "us_canada_mexico": { "after_first_tb_per_gb": 0.085 },
+            "europe_israel_turkiye": { "after_first_tb_per_gb": 0.085 }
+          },
+          "notes": "Rates vary by region and usage tiers; check page for full tier table."
+        },
+        "sources": ["cloudfront_pricing"]
+      },
+      "netlify": {
+        "credit_plans": {
+          "credit_costs": {
+            "personal": { "credits": 200, "price_usd": 5, "usd_per_credit": 0.025 },
+            "pro": { "credits": 1000, "price_usd": 20, "usd_per_credit": 0.02 }
+          },
+          "bandwidth_credits_per_gb": 10,
+          "effective_bandwidth_usd_per_gb": {
+            "personal": 0.25,
+            "pro": 0.20
+          }
+        },
+        "legacy_overage": {
+          "pro_plan_overage_per_100gb": 55,
+          "effective_per_gb": 0.55
+        },
+        "notes": "New (2025) accounts use credits; legacy plans still honored.",
+        "sources": ["netlify_credits_how_it_works", "netlify_legacy_plans", "netlify_pricing_update"]
+      },
+      "cloudflare": {
+        "cdn": {
+          "per_gb": 0,
+          "notes": "Self-serve Free/Pro/Business plans do not meter bandwidth; cost is in plan price. Enterprise/custom may differ."
+        },
+        "argo_smart_routing": {
+          "base_per_domain": 5,
+          "per_gb": 0.10,
+          "notes": "Optional add-on."
+        },
+        "r2_storage_egress": {
+          "per_gb": 0,
+          "notes": "R2 has zero egress fees; other ops may bill."
+        },
+        "sources": ["cloudflare_plans", "cloudflare_argo_blog", "cloudflare_r2_pricing"]
+      }
+    },
+    "source_map": {
+      "vercel_pricing_fast_data_transfer": "https://vercel.com/pricing",
+      "cloudfront_pricing": "https://aws.amazon.com/cloudfront/pricing/",
+      "netlify_credits_how_it_works": "https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/",
+      "netlify_pricing_update": "https://www.netlify.com/changelog/netlify-pricing-update-introducing-credit-based-plans/",
+      "netlify_legacy_plans": "https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-legacy-plans/legacy-pricing-plans/",
+      "cloudflare_plans": "https://www.cloudflare.com/plans/",
+      "cloudflare_argo_blog": "https://blog.cloudflare.com/argo/",
+      "cloudflare_r2_pricing": "https://developers.cloudflare.com/r2/pricing/"
+    }
+  }
