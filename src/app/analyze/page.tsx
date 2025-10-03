@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, Circle, Activity, Bot, HardDrive, DollarSign, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { toast } from "sonner"
 
 export default function AnalyzePage() {
   const searchParams = useSearchParams()
@@ -79,7 +80,18 @@ export default function AnalyzePage() {
 
   const handleGetStarted = () => {
     const slug = providerToRoute(provider)
-    router.push(`/connect/${slug}`)
+    const providerLower = (provider || '').toLowerCase()
+
+    // Redirect AWS and Cloudflare to upload page with toast
+    if (providerLower === 'aws' || providerLower === 'cloudflare') {
+      toast.info('OAuth Connect Available for Vercel & Netlify Only', {
+        description: "We're working hard to bring AWS and Cloudflare OAuth integration soon! Please upload your server logs in the meantime.",
+        duration: 6000,
+      })
+      router.push(`/upload?provider=${providerLower}&domain=${website}`)
+    } else {
+      router.push(`/connect/${slug}`)
+    }
   }
 
   const botCategories = [
