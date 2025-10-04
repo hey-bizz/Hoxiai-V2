@@ -24,6 +24,12 @@ async function ensureBucket(client: SupabaseClient, name: string) {
 
 export async function POST(req: Request) {
   try {
+    // Check if supabaseAdmin is initialized
+    if (!supabaseAdmin) {
+      console.error('[presign] supabaseAdmin not initialized - check SUPABASE_SERVICE_ROLE_KEY env var')
+      return NextResponse.json({ error: 'Server configuration error: Service role key missing' }, { status: 500 })
+    }
+
     const supabaseUser = createServerClientFromHeaders(new Headers(req.headers))
     const { data: auth } = await supabaseUser.auth.getUser()
     if (!auth?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -61,7 +67,8 @@ export async function POST(req: Request) {
       .createSignedUploadUrl(storageKey)
 
     if (signErr || !signed) {
-      return NextResponse.json({ error: signErr?.message || 'Failed to presign' }, { status: 500 })
+      console.error('[presign] Storage error:', signErr)
+      return NextResponse.json({ error: signErr?.message || 'Failed to create signed upload URL. Ensure the "logs" bucket exists in Supabase Storage.' }, { status: 500 })
     }
 
     // Record upload row
@@ -70,10 +77,14 @@ export async function POST(req: Request) {
       .insert({ org_id, site_id, storage_key: storageKey, bytes: bytes ?? null, file_ext: ext, provider_hint: provider_hint || null, status: 'pending' })
       .select('*')
       .single()
-    if (upErr) return NextResponse.json({ error: upErr.message }, { status: 500 })
+    if (upErr) {
+      console.error('[presign] Database error:', upErr)
+      return NextResponse.json({ error: `Database error: ${upErr.message}. Ensure migrations have been applied.` }, { status: 500 })
+    }
 
     return NextResponse.json({ upload_id: upload.id, storage_key: storageKey, url: signed.signedUrl, token: signed.token })
   } catch (err: any) {
-    return NextResponse.json({ error: err?.message || 'Failed to presign' }, { status: 400 })
+    console.error('[presign] Unexpected error:', err)
+    return NextResponse.json({ error: err?.message || 'Failed to presign' }, { status: 500 })
   }
 }
