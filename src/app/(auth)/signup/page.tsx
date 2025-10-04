@@ -16,7 +16,7 @@ import { toast } from "sonner"
 export default function SignupPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const returnTo = searchParams.get('returnTo') || '/dashboard'
+  const returnTo = searchParams.get('returnTo') || '/'
   const [formData, setFormData] = useState({
     name: "",
     email: "",

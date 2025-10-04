@@ -8,12 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import Link from "next/link"
-import { Activity, Shield, Zap } from "lucide-react"
+import { Activity, Shield, Zap, User, LogOut } from "lucide-react"
+import { createBrowserClient } from "@/lib/supabase"
+import type { User as SupabaseUser } from "@supabase/supabase-js"
 
 export default function HoxiLanding() {
   const [url, setUrl] = useState("")
   const [totalRequests, setTotalRequests] = useState(3992)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -22,6 +26,40 @@ export default function HoxiLanding() {
     }, 3000)
     return () => clearInterval(interval)
   }, [])
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const supabase = createBrowserClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        setUser(session?.user ?? null)
+      } catch (error) {
+        console.error('Error checking auth:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkAuth()
+
+    // Listen for auth changes
+    const supabase = createBrowserClient()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  const handleSignOut = async () => {
+    const supabase = createBrowserClient()
+    await supabase.auth.signOut()
+    setUser(null)
+    router.refresh()
+  }
 
   const handleAnalyze = async () => {
     if (url) {
@@ -77,16 +115,38 @@ export default function HoxiLanding() {
             </Link>
 
             <div className="flex items-center gap-3">
-              <Link href="/login">
-                <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
-                  Sign In
-                </Button>
-              </Link>
-              <Link href="/signup">
-                <Button size="sm" className="bg-green-400 hover:bg-green-500 text-black font-semibold">
-                  Get Started
-                </Button>
-              </Link>
+              {isLoading ? (
+                <div className="w-6 h-6 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+              ) : user ? (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-800/50 rounded-lg border border-gray-700">
+                    <User className="w-4 h-4 text-green-400" />
+                    <span className="text-sm text-gray-300">{user.email}</span>
+                  </div>
+                  <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-300 hover:text-white hover:bg-gray-800"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login">
+                    <Button variant="ghost" size="sm" className="text-gray-300 hover:text-white hover:bg-gray-800">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/signup">
+                    <Button size="sm" className="bg-green-400 hover:bg-green-500 text-black font-semibold">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
