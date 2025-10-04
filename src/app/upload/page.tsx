@@ -175,7 +175,9 @@ export default function UploadPage() {
         const { data: { session } } = await supabase.auth.getSession()
 
         if (!session) {
-          router.push('/login')
+          // Preserve current URL to redirect back after login
+          const returnUrl = encodeURIComponent(window.location.pathname + window.location.search)
+          router.push(`/login?returnTo=${returnUrl}`)
           return
         }
 

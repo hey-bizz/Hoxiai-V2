@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,6 +15,8 @@ import { toast } from "sonner"
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const returnTo = searchParams.get('returnTo') || '/dashboard'
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -39,7 +41,7 @@ export default function LoginPage() {
 
       if (data.user) {
         toast.success("Successfully signed in!")
-        router.push("/dashboard")
+        router.push(returnTo)
         router.refresh()
       }
     } catch (error: any) {
@@ -61,7 +63,7 @@ export default function LoginPage() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}${returnTo}`,
         },
       })
 
