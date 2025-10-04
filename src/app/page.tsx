@@ -128,6 +128,8 @@ export default function HoxiLanding() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   className="flex-1 h-14 text-lg bg-gray-900 border-gray-700 text-white placeholder:text-gray-500"
+                  autoComplete="url"
+                  aria-label="Enter your website URL for analysis"
                 />
                 <Button
                   onClick={handleAnalyze}

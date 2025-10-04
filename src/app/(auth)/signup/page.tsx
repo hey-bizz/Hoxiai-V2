@@ -181,6 +181,8 @@ export default function SignupPage() {
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="pl-10 h-12 bg-gray-800/50 border-gray-600 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500/20"
                     required
+                    autoComplete="name"
+                    aria-label="Full name"
                   />
                 </div>
 
@@ -193,6 +195,8 @@ export default function SignupPage() {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="pl-10 h-12 bg-gray-800/50 border-gray-600 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500/20"
                     required
+                    autoComplete="email"
+                    aria-label="Email address"
                   />
                 </div>
 
@@ -206,6 +210,8 @@ export default function SignupPage() {
                     className="pl-10 h-12 bg-gray-800/50 border-gray-600 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500/20"
                     required
                     minLength={8}
+                    autoComplete="new-password"
+                    aria-label="Password"
                   />
                 </div>
 

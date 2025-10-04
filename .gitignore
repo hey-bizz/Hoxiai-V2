@@ -58,4 +58,5 @@ fetch-bot-signature.ts
 # Image
 Image/*
 
-#supabase
+#playwright-mcp
+.playwright-mcp/*
