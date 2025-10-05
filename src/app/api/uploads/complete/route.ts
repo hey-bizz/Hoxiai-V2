@@ -52,24 +52,30 @@ export async function POST(req: Request) {
       // Kick off analysis immediately for the observed window (MVP synchronous)
       const start = result.windowStart || new Date(Date.now() - 24*60*60*1000).toISOString()
       const end = result.windowEnd || new Date().toISOString()
+
+      console.log('[Uploads Complete] Analysis window:', { start, end, windowStart: result.windowStart, windowEnd: result.windowEnd })
+
       // Provider guess from hint, default to cloudflare
       const providerMap: Record<string, any> = { cloudfront: 'aws', aws: 'aws', cloudflare: 'cloudflare', vercel: 'vercel', netlify: 'netlify' }
       const provider = providerMap[(upload.provider_hint || '').toLowerCase()] || 'cloudflare'
 
       try {
+        console.log('[Uploads Complete] Starting analysis with provider:', provider)
         const report = await analyze({
           orgId: upload.org_id,
           siteId: upload.site_id,
           provider,
           window: { start, end },
           dataRef: { db: { orgId: upload.org_id, siteId: upload.site_id, start, end } },
-          options: { useWebSearch: false, debug: false }
+          options: { useWebSearch: false, debug: true }
         })
+        console.log('[Uploads Complete] Analysis completed successfully, reportId:', report.reportId)
         return NextResponse.json({ ok: true, normalized: result.inserted, reportId: report.reportId, window: { start, end } })
       } catch (e: any) {
         // Non-fatal; normalization succeeded.
         console.error('[Uploads Complete] analyze failed:', e?.message || e)
-        return NextResponse.json({ ok: true, normalized: result.inserted, window: { start, end }, note: 'analyze failed; see logs' })
+        console.error('[Uploads Complete] Full error:', e)
+        return NextResponse.json({ ok: true, normalized: result.inserted, window: { start, end }, error: e?.message, note: 'analyze failed; see logs' })
       }
     } else {
       await supabaseAdmin.from('ingest_uploads').update({ status: 'error', error_text: result.error || 'normalize failed' }).eq('id', uploadId)

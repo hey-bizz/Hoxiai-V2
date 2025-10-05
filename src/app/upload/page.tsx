@@ -139,10 +139,17 @@ export default function UploadPage() {
 
           if (!completeRes.ok) {
             const errData = await completeRes.json()
+            console.error('[Upload] Complete API error:', errData)
             throw new Error(errData.error || 'Failed to complete upload')
           }
 
           const result = await completeRes.json()
+          console.log('[Upload] Complete API response:', result)
+
+          // Check if analysis failed but normalization succeeded
+          if (result.note || result.error) {
+            console.warn('[Upload] Analysis had issues:', { note: result.note, error: result.error })
+          }
 
           setUploadProgress(prev => prev.map(p =>
             p.fileName === file.name ? { ...p, progress: 100, status: 'complete' } : p

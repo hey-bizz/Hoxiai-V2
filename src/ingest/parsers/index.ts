@@ -56,7 +56,24 @@ export async function* parseJsonl(text: string): AsyncGenerator<ParsedEntry> {
     if (!s) continue
     try {
       const o = JSON.parse(s)
-      const ts = new Date(o.timestamp || o.ts || o.time || Date.now()).toISOString()
+      const tsRaw = o.timestamp || o.ts || o.time
+      let ts: string
+      if (tsRaw) {
+        const num = Number(tsRaw)
+        // Unix timestamp in seconds (10 digits)
+        if (!isNaN(num) && String(tsRaw).length === 10) {
+          ts = new Date(num * 1000).toISOString()
+        } else if (!isNaN(num) && num > 1000000000000) {
+          // Already in milliseconds
+          ts = new Date(num).toISOString()
+        } else {
+          // ISO date string
+          const parsed = new Date(tsRaw)
+          ts = isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString()
+        }
+      } else {
+        ts = new Date().toISOString()
+      }
       const ip = o.ip || o.client_ip || o.remote_addr || undefined
       const ua = o.user_agent || o.userAgent || o.ua || undefined
       const method = o.method || o.verb || undefined
@@ -102,7 +119,25 @@ export async function* parseCsv(text: string): AsyncGenerator<ParsedEntry> {
     const raw = lines[i]
     const parts = csvSafeSplit(raw)
     const tsRaw = get(parts, 'timestamp') || get(parts, 'ts') || get(parts, 'time') || get(parts, 'date') || ''
-    const ts = tsRaw ? new Date(tsRaw).toISOString() : new Date().toISOString()
+
+    // Handle unix timestamps (seconds since epoch) vs ISO dates
+    let ts: string
+    if (tsRaw) {
+      const num = Number(tsRaw)
+      // If it's a valid number and looks like a unix timestamp (10 digits = seconds)
+      if (!isNaN(num) && tsRaw.length === 10) {
+        ts = new Date(num * 1000).toISOString() // Convert seconds to milliseconds
+      } else if (!isNaN(num) && num > 1000000000000) {
+        // Already in milliseconds
+        ts = new Date(num).toISOString()
+      } else {
+        // Try parsing as ISO date or date string
+        const parsed = new Date(tsRaw)
+        ts = isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString()
+      }
+    } else {
+      ts = new Date().toISOString()
+    }
     const ip = get(parts, 'ip') || get(parts, 'client_ip') || get(parts, 'remote_addr') || get(parts, 'http_x_forwarded_for') || get(parts, 'user_ip')
     const ua = get(parts, 'user_agent') || get(parts, 'ua') || get(parts, 'http_user_agent')
     const method = get(parts, 'method') || get(parts, 'verb') || get(parts, 'request_type')
