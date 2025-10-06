@@ -43,8 +43,9 @@ export interface ChatMessageAction {
 }
 
 // Global state atoms
-export const orgIdAtom = atom<string>('org_prod_001')
-export const siteIdAtom = atom<string>('site_prod_001')
+// These will be initialized from Supabase via useOrgAndSite hook
+export const orgIdAtom = atom<string | null>(null)
+export const siteIdAtom = atom<string | null>(null)
 export const timeRangeAtom = atom<TimeRange>('24h')
 export const customTimeWindowAtom = atom<TimeWindow | null>(null)
 export const autoRefreshAtom = atom<AutoRefresh>('live')
