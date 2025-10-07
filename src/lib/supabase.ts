@@ -4,7 +4,7 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 // This prevents "supabaseKey is required" when client components import this module.
 let supabaseAdminInternal: SupabaseClient | undefined
 if (typeof window === 'undefined') {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+  const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) as string
   const key = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY) as string
   if (!url || !key) {
     // Keep undefined so any accidental client-side import doesn't throw.
@@ -20,7 +20,7 @@ export const supabaseAdmin = supabaseAdminInternal as SupabaseClient
 // Create a server-scoped client for Route Handlers by forwarding Authorization header
 export function createServerClientFromHeaders(headers: Headers): SupabaseClient {
   const authHeader = headers.get('authorization') || ''
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL as string
+  const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) as string
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string
   return createClient(url, anon, {
     auth: { persistSession: false },
